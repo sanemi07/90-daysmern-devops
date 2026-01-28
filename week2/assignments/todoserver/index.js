@@ -1,74 +1,144 @@
-import { error } from 'console'
 import express from 'express'
 import fs from 'fs/promises'
+import path from 'path'
 
-
-const app=express()
-
-
+const app = express()
 app.use(express.json())
 
+// ---------- CONFIG ----------
+const DATA_FILE = path.join(process.cwd(), 'todo.txt')
 
-
-
-
-
-
-async function readFile(){
-    const data= await fs.readFile('todo.txt','utf-8')
-    const parsedData=JSON.parse(data)
-    return parsedData
-
-}
-async function writeFile(array) {
-    const str=JSON.stringify(array)
-
-    const data=await fs.writeFile('todo.txt',str)
-    
+// ---------- HELPERS ----------
+async function readTodos() {
+  try {
+    const data = await fs.readFile(DATA_FILE, 'utf8')
+    return JSON.parse(data)
+  } catch (err) {
+    // file not found or empty → start fresh
+    if (err.code === 'ENOENT') {
+      return []
+    }
+    throw err
+  }
 }
 
+async function writeTodos(todos) {
+  await fs.writeFile(DATA_FILE, JSON.stringify(todos, null, 2))
+}
 
+function generateId(todos) {
+  if (todos.length === 0) return 1
+  return Math.max(...todos.map(t => t.id)) + 1
+}
 
-app.get('/todos',async(req,res)=>{
-    //return all the todo objects in json from file 
-    try {
-       const data= await readFile()
-       res.status(200).json(data)
-        
-    } catch (error) {
-        res.status(500).json(error)
-    }
+// ---------- ROUTES ----------
 
+// 1️⃣ GET /todos
+app.get('/todos', async (req, res) => {
+  try {
+    const todos = await readTodos()
+    res.status(200).json(todos)
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to read todos' })
+  }
 })
 
-app.get('/todos/:id',async(req,res)=>{
-    try {
-        const data=await readFile()
-        const id=req.params.id
-        
-        const todo=data.find((item)=>item.id===id)
-        if(!todo){
-            res.status(404).json('id not exist')
-        }else{
-         res.status(200).json(todo)}
-        
-    } catch (error) {
-         res.status(500).json(error)
-    }
-})
+// 2️⃣ GET /todos/:id
+app.get('/todos/:id', async (req, res) => {
+  try {
+    const todos = await readTodos()
+    const id = Number(req.params.id)
 
-app.post('/todos',async(req,res)=>{
-    try {
-        
-        
-    } catch (error) {
-        res.status(500).json(error)
+    const todo = todos.find(t => t.id === id)
+
+    if (!todo) {
+      return res.status(404).json({ error: 'Todo not found' })
     }
 
+    res.status(200).json(todo)
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' })
+  }
 })
 
+// 3️⃣ POST /todos
+app.post('/todos', async (req, res) => {
+  try {
+    const { title, description } = req.body
 
+    if (!title || !description) {
+      return res.status(400).json({ error: 'Invalid body' })
+    }
 
-app.listen(3000,()=>{
-    console.log('server running')
+    const todos = await readTodos()
+
+    const newTodo = {
+      id: generateId(todos),
+      title,
+      description,
+      completed: false
+    }
+
+    todos.push(newTodo)
+    await writeTodos(todos)
+
+    res.status(201).json({ id: newTodo.id })
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to create todo' })
+  }
+})
+
+// 4️⃣ PUT /todos/:id
+app.put('/todos/:id', async (req, res) => {
+  try {
+    const { title, description, completed } = req.body
+    const id = Number(req.params.id)
+
+    const todos = await readTodos()
+    const todo = todos.find(t => t.id === id)
+
+    if (!todo) {
+      return res.status(404).json({ error: 'Todo not found' })
+    }
+
+    if (title !== undefined) todo.title = title
+    if (description !== undefined) todo.description = description
+    if (completed !== undefined) todo.completed = completed
+
+    await writeTodos(todos)
+    res.status(200).json({ message: 'Todo updated' })
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update todo' })
+  }
+})
+
+// 5️⃣ DELETE /todos/:id
+app.delete('/todos/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+    const todos = await readTodos()
+
+    const index = todos.findIndex(t => t.id === id)
+
+    if (index === -1) {
+      return res.status(404).json({ error: 'Todo not found' })
+    }
+
+    todos.splice(index, 1)
+    await writeTodos(todos)
+
+    res.status(200).json({ message: 'Todo deleted' })
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete todo' })
+  }
+})
+
+// 6️⃣ Catch-all 404
+app.use((req, res) => {
+  res.status(404).json({ error: 'Route not found' })
+})
+
+// ---------- START SERVER ----------
+app.listen(3000, () => {
+  console.log('Todo server running on port 3000')
 })
