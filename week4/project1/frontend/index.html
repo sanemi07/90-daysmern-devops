@@ -1,0 +1,31 @@
+<html>
+    <script>
+  async function calculate() {
+    const principle = Number(document.getElementById("principle").value);
+    const rate = Number(document.getElementById("rate").value);
+    const time = Number(document.getElementById("time").value);
+
+    const res = await fetch(
+      `http://localhost:3000/simple?principle=${principle}&rate=${rate}&time=${time}`
+    );
+
+    const data = await res.json();
+    document.getElementById("result").innerHTML =
+      "Simple Interest = " + data.result;
+  }
+</script>
+
+<body>
+    <div>
+<input id="principle" placeholder="enter  principle"/><br>
+<br>
+<input id="rate" placeholder="enter  rate"/><br>
+<br>
+<input id="time" placeholder="enter time"/><br>
+<br>
+ <button onclick="calculate()" >calculate Simple Intrest</button></div>
+ <div id="result"></div>
+
+
+</body>
+</html>
