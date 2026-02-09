@@ -1,5 +1,7 @@
 import express from "express"
 import dotenv from dotenv
+import { connectDb } from "./db"
+import { create } from "./types"
 dotenv.config()
 
 
@@ -12,10 +14,14 @@ const app=express()
 
 app.use(express.json())
 
+connectDb()
 
-const schema=zod.schema
+
+
+
 app.post('/todos',(req,res)=>{
-
+ const payload=req.body
+ const  parsedPayload=create.safeParse()
 })
 
 app.put('/completed',(req,res)=>{
