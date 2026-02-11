@@ -29,6 +29,6 @@ export const connectDb=async()=>{
         })
         console.log("db connected")
     } catch (error) {
-        console.log("error connecting db")
+        console.log("error connecting db",error)
     }
 }
