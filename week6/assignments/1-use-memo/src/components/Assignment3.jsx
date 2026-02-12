@@ -10,9 +10,17 @@ export const Assignment3 = () => {
         { name: 'Tomato', value: 30 },
         // Add more items as needed
     ]);
+    let totalValue=0
+    const calculate=useMemo(()=>{
+        items.map((item)=>{
+            totalValue+=item.value
+        })
+        return totalValue
+
+    },[])
 
     // Your code starts here
-    const totalValue = 0;
+   
     // Your code ends here
     return (
         <div>
@@ -21,7 +29,7 @@ export const Assignment3 = () => {
                     <li key={index}>{item.name} - Price: ${item.value}</li>
                 ))}
             </ul>
-            <p>Total Value: {totalValue}</p>
+            <p>Total Value: {calculate}</p>
         </div>
     );
 };
