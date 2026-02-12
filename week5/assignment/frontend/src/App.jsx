@@ -7,7 +7,7 @@ const initialFormData = {
   description: "",
   linkedIn: "",
   twitter: "",
-  otherSocial: "",
+   otherSocial: "",
   interests: ""
 };
 
