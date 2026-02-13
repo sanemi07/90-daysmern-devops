@@ -3,36 +3,39 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { CountContext } from './context'
+import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil'
+import { countAtom } from './store/atoms/CountAtom'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-    <CountContext.Provider value={count}>
-      <Count setCount={setCount}></Count>
+     <RecoilRoot>
+      <Count ></Count>
+      </RecoilRoot>
 
-    </CountContext.Provider>
+
       
     </>
   )
 }
-function Count({setCount}){
+function Count(){
   return(
     <>
     <CountRender></CountRender>
-    <Button setCount={setCount}></Button>
+    <Button ></Button>
     </>
   )
 }
 function CountRender(){
-  const count=useContext(CountContext) 
+  const count=useRecoilValue(countAtom) 
   return(
     <div>{count} </div>
   )
 }
-function Button({setCount}){
-  const count=useContext(CountContext) 
+function Button(){
+  const [count,setCount]=useRecoilState(countAtom)
   return(
     <div>
     <button onClick={()=>{
