@@ -1,9 +1,13 @@
+import { DefaultSidebar } from "./SideBar";
+
+
 const Navbar = () => {
   return (
     <div className="flex justify-between items-center p-4 shadow-md w-full">
 
       {/* Left Section */}
       <div className="flex items-center gap-4">
+        <DefaultSidebar></DefaultSidebar>
         <div className="font-semibold text-2xl">
           Payouts
         </div>
@@ -30,7 +34,7 @@ const Navbar = () => {
       </div>
 
       {/* mid - Search */}
-      <div className="w-full max-w-sm min-w-[200px]">
+      <div className="w-full max-w-sm min-w-50">
         <div className="relative flex items-center">
           
           <svg
