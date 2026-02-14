@@ -1,4 +1,4 @@
-import { DefaultSidebar } from "./SideBar";
+
 
 
 const Navbar = () => {
@@ -7,7 +7,7 @@ const Navbar = () => {
 
       {/* Left Section */}
       <div className="flex items-center gap-4">
-        <DefaultSidebar></DefaultSidebar>
+       
         <div className="font-semibold text-2xl">
           Payouts
         </div>
