@@ -82,9 +82,11 @@ router.put('/',authMiddleware,async(req,res)=>{
         if(!success){
             return res.status(400).json({msg:"invalid credentials"})
         }
-        await User.updateOne(req.body,{
-            id:req.userId
-        })
+        await User.updateOne(
+  { _id: req.userId },   // filter
+  { $set: req.body }     // update
+);
+
         return res.status(200).json({msg:"user details updated succefully"})
      
         
