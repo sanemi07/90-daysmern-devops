@@ -35,7 +35,8 @@ router.post('/signup',async(req,res)=>{
         }
         const hashedPassword=await hashPassword(password)
         const user=await User.create({email,password:hashedPassword,firstName,lastName})
-        return res.status(201).json({message:"User created successfully",user})
+        const token=generateToken(user)
+        return res.status(201).json({message:"User created successfully",token})
 
     } catch (error) {
         return res.status(400).json({error:error.message})
