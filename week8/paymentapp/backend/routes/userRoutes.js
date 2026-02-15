@@ -21,7 +21,7 @@ const loginSchema=zod.object({
     password:zod.string().min(6)
 })
 const updateSchema=zod.object({
-   password:zod.string().optional(),
+  
     firstName:zod.string().optional(),
     lastName:zod.string().optional(),
 
@@ -81,7 +81,8 @@ router.put('/',authMiddleware,async(req,res)=>{
         await User.updateOne(req.body,{
             id:req.userId
         })
-        // password ko hash karke dalna h 
+        return res.status(200).json({msg:"user details updated succefully"})
+     
         
         
     } catch (error) {
@@ -89,6 +90,30 @@ router.put('/',authMiddleware,async(req,res)=>{
     }
 
     
+})
+router.get("/bulk",async(req,res)=>{
+    try {
+        const filter=req.query.filter || ""
+        const users=await User.find({
+            $or:[{
+                firstName:{
+                    "$regex":filter
+                },
+                lastName:{
+                    "$regex":filter
+                }
+            }]
+
+        })
+        return res.status(200).json({msg:"users fetched successfully",user:users.map(user=>({
+            firstName:user.firstName,
+            email:user.email,
+            lastName:user.lastName,
+            id:user._id
+        }))})
+    } catch (error) {
+         return res.status(400).json({error:error.message})
+    }
 })
 
 
