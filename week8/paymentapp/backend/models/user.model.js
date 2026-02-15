@@ -28,10 +28,12 @@ export default User
 export const generateToken=(user)=>{
     return jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:'1d'})
 }
-export const hashPassword=(password)=>{
-    return bcrypt.hash(password,10)
+export const hashPassword=async (password)=>{
+    const res=await  bcrypt.hash(password,10)
+    return res
 
 }
-export const comparePassword=(password,hashedPassword)=>{
-    return bcrypt.compare(password,hashedPassword)
+export const comparePassword=async (password,hashedPassword)=>{
+   const res=await  bcrypt.compare(password,hashedPassword)
+   return res
 }
