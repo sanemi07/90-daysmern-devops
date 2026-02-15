@@ -11,4 +11,4 @@ export const authMiddleware=async(req,resizeBy,next)=>{
         return res.status(401).json({error:"Unauthorized"})
     }
 
-}
+} 

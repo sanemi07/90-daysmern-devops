@@ -2,6 +2,7 @@ import { Router } from "express";
 import zod from "zod";
 import User from "../models/user.model.js";
 import { hashPassword } from "../models/user.model.js";
+import { authMiddleware } from "../middleware/auth.js";
 
 
 
@@ -18,6 +19,12 @@ const SignupSchema=zod.object({
 const loginSchema=zod.object({
     email:zod.string(),
     password:zod.string().min(6)
+})
+const updateSchema=zod.object({
+   password:zod.string().optional(),
+    firstName:zod.string().optional(),
+    lastName:zod.string().optional(),
+
 })
 
 const router=Router();
@@ -64,6 +71,23 @@ router.post('/signin',async(req,res)=>{
     }
 
 })
+router.put('/',authMiddleware,async(req,res)=>{
+    try {
+        const {success}=updateSchema.safeParse(req.body){
+            if(!success){
+                return res.status(400).json({msg:"invalid format"})
+            }
+        }
+        
+    }catch(error) {
+       
+        return res.status(400).json({error:error.message})
+    }
+
+    
+})
+
+
 
 
 
