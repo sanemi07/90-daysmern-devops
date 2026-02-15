@@ -72,15 +72,19 @@ router.post('/signin',async(req,res)=>{
 
 })
 router.put('/',authMiddleware,async(req,res)=>{
+    
     try {
-        const {success}=updateSchema.safeParse(req.body){
-            if(!success){
-                return res.status(400).json({msg:"invalid format"})
-            }
+        const {success}=updateSchema.safeParse(req.body)
+        if(!success){
+            return res.status(400).json({msg:"invalid credentials"})
         }
+        await User.updateOne(req.body,{
+            id:req.userId
+        })
+        // password ko hash karke dalna h 
         
-    }catch(error) {
-       
+        
+    } catch (error) {
         return res.status(400).json({error:error.message})
     }
 
