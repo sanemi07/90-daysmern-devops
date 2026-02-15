@@ -3,6 +3,7 @@ import zod from "zod";
 import User from "../models/user.model.js";
 import { hashPassword } from "../models/user.model.js";
 import { authMiddleware } from "../middleware/auth.js";
+import Account from "../models/account.model.js";
 
 
 
@@ -43,7 +44,10 @@ router.post('/signup',async(req,res)=>{
         const hashedPassword=await hashPassword(password)
         const user=await User.create({email,password:hashedPassword,firstName,lastName})
         const token=generateToken(user)
-        return res.status(201).json({message:"User created successfully",token})
+        const balance=Math.floor((Math.random()*10000)+1)
+        const account=await Account.create({userId:user._id,balance:balance})
+
+        return res.status(201).json({message:"User created successfully",token,account})
 
     } catch (error) {
         return res.status(400).json({error:error.message})
