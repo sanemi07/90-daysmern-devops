@@ -107,30 +107,35 @@ router.put('/',authMiddleware,async(req,res)=>{
 
     
 })
-router.get("/bulk",async(req,res)=>{
+router.get("/bulk", async (req, res) => {
     try {
-        const filter=req.query.filter || ""
-        const users=await User.find({
-            $or:[{
-                firstName:{
-                    "$regex":filter
-                },
-                lastName:{
-                    "$regex":filter
-                }
-            }]
+        const filter = req.query.filter || "";
 
-        })
-        return res.status(200).json({msg:"users fetched successfully",user:users.map(user=>({
-            firstName:user.firstName,
-            email:user.email,
-            lastName:user.lastName,
-            id:user._id
-        }))})
+        const users = await User.find({
+            $or: [
+                {
+                    firstName: { $regex: filter, $options: "i" }
+                },
+                {
+                    lastName: { $regex: filter, $options: "i" }
+                }
+            ]
+        });
+
+        return res.status(200).json({
+            msg: "users fetched successfully",
+            user: users.map(user => ({
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                id: user._id
+            }))
+        });
+
     } catch (error) {
-         return res.status(400).json({error:error.message})
+        return res.status(400).json({ error: error.message });
     }
-})
+});
 
 
 
