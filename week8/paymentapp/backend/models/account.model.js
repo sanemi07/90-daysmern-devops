@@ -1,16 +1,16 @@
 import mongoose, { Types } from "mongoose";
-import { object } from "zod";
 
-const accountSchema=new mongoose.Schema({
+
+const accountSchema= mongoose.Schema({
     userId:{
-        typeof:mongoose.Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'User',
         required:true
     },balance:{
-        typeof:Number,
+        type:Number,
         required:true
         
     }
 })
-const  Account=mongoose.model('account',accountSchema)
+const  Account= new mongoose.model('account',accountSchema)
 export default Account

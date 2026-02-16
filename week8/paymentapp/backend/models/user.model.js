@@ -1,26 +1,15 @@
 import mongoose, { mongo, Mongoose } from "mongoose";
-import { jwt } from "jsonwebtoken";
-const UserSchema=new Mongoose.Schema({
-    email:{ 
-        typeof:String,
-        equired:true,
-        unique:true
-    },
-    firstName:{
-        typeof:String,
-        required:true
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
+const UserSchema = mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  password: { type: String, required: true }
+});
 
-    },lastName:{
-        typeof:String,
-        required:true
-    },
-    password:{
-        typeof:String,
-        required:true}
-    
-})
 
-const User=mongoose.model("User",UserSchema);
+const User= new mongoose.model("User",UserSchema);
 export default User
 
 
