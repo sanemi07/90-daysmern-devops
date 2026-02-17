@@ -1,14 +1,10 @@
-# Payment App Backend
+# Payment App (MERN + DevOps Week 8)
 
-Express + MongoDB backend for a simple payment application with JWT authentication, user management, account balance, and money transfer APIs.
+Full-stack payment app with JWT auth, account balance, and transfer APIs.
 
 ## Tech Stack
-- Node.js
-- Express
-- MongoDB + Mongoose
-- JWT (`jsonwebtoken`)
-- Password hashing (`bcrypt`)
-- Input validation (`zod`)
+- Frontend: React (Vite), React Router, Axios, Tailwind CSS
+- Backend: Node.js, Express, MongoDB, Mongoose, JWT, bcrypt, zod
 
 ## Project Structure
 ```text
@@ -24,43 +20,77 @@ backend/
     userRoutes.js
     accontRoutes.js
   index.js
-  package.json
+
+frontend/
+  src/
+    components/
+      Appbar.jsx
+      Balance.jsx
+      SendMoney.jsx
+      Users.jsx
+      ...
+    pages/
+      SignUp.jsx
+      SignIn.jsx
+      DashBoard.jsx
+      Transfer.jsx
+    App.jsx
 ```
 
 ## Prerequisites
 - Node.js 18+
-- MongoDB running locally or remotely
+- MongoDB running locally/remotely
 
-## Environment Variables
-Create a `.env` file inside `backend/` with:
-
+## Backend Setup
+1. Go to backend:
+```bash
+cd backend
+```
+2. Create `.env`:
 ```env
-PORT=5000
+PORT=3000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 ```
-
-## Installation and Run
-From the `backend` directory:
-
+3. Install and run:
 ```bash
 npm install
 npm run dev
 ```
 
-Server starts on `http://localhost:<PORT>`.
+Backend runs at `http://localhost:3000` (based on current frontend API calls).
+
+## Frontend Setup
+1. Go to frontend:
+```bash
+cd frontend
+```
+2. Install and run:
+```bash
+npm install
+npm run dev
+```
+
+## Frontend Routes
+- `/` -> `SignUp`
+- `/signin` -> `SignIn`
+- `/dashboard` -> `DashBoard`
+- `/transfer` -> `Transfer`
+
+## Current Frontend Flow
+1. User signs up/signs in.
+2. JWT token is stored in `localStorage` as `token`.
+3. Dashboard loads `Balance` component and requests:
+   - `GET /api/v1/accounts/getbalance`
+   - Header: `Authorization: Bearer <token>`
 
 ## API Base URL
 `/api/v1`
 
-## Endpoints
+## Backend Endpoints
 
-### User Routes
-Base: `/api/v1/users`
-
+### User Routes (`/api/v1/users`)
 1. `POST /signup`
-- Creates a new user
-- Also creates an account with random starting balance
 - Body:
 ```json
 {
@@ -72,7 +102,6 @@ Base: `/api/v1/users`
 ```
 
 2. `POST /signin`
-- Authenticates user and returns JWT token
 - Body:
 ```json
 {
@@ -82,8 +111,7 @@ Base: `/api/v1/users`
 ```
 
 3. `PUT /`
-- Updates `firstName` and/or `lastName`
-- Protected route (`Authorization: Bearer <token>`)
+- Protected (`Authorization: Bearer <token>`)
 - Body:
 ```json
 {
@@ -93,20 +121,20 @@ Base: `/api/v1/users`
 ```
 
 4. `GET /bulk?filter=<name>`
-- Search users by first name or last name
-- Returns lightweight user list
+- Search users by first/last name
 
-### Account Routes
-Base: `/api/v1/accounts`
-
+### Account Routes (`/api/v1/accounts`)
 1. `GET /getbalance`
-- Returns current logged-in user's balance
-- Protected route (`Authorization: Bearer <token>`)
+- Protected (`Authorization: Bearer <token>`)
+- Current response shape:
+```json
+{
+  "msg": "your account balance is 1234"
+}
+```
 
 2. `POST /transfer`
-- Transfers amount from logged-in user to another user account
-- Uses MongoDB transaction
-- Protected route (`Authorization: Bearer <token>`)
+- Protected (`Authorization: Bearer <token>`)
 - Body:
 ```json
 {
@@ -115,14 +143,12 @@ Base: `/api/v1/accounts`
 }
 ```
 
-## Auth
-Send token in request header:
-
+## Auth Header Example
 ```http
 Authorization: Bearer <jwt_token>
 ```
 
 ## Notes
-- Database name is hardcoded as `paymentapp` in `config/connectdb.js`.
-- CORS is enabled globally.
-- There are currently no automated tests configured.
+- File name is currently `backend/routes/accontRoutes.js`.
+- `SendMoney` and `Users` UI are present, but transfer/search wiring is still partial.
+- No automated tests configured yet.
