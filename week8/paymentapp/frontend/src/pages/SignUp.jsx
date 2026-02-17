@@ -14,11 +14,11 @@ const SignUp = () => {
       <InputBox label={"First Name"} placeHolder={"Name"}/>
        <InputBox label={"last Name"} placeHolder={"Name"}/>
         <InputBox label={"Email"} placeHolder={"email"}/>
-         <InputBox label={"Password"} placeHolder={"password"}/>
+         <InputBox label={"Password"} placeHolder={"123456"}/>
          <div className='pt-7'>
          <Button label={"Signup"}></Button>
          
-         jj
+         
          </div>
          <BottomWarning label={"Already Have an Account ?"} text={"Signin"} to={"/singin"}/>
          
