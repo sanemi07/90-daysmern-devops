@@ -18,7 +18,7 @@ const SignUp = () => {
          <div className='pt-7'>
          <Button label={"Signup"}></Button>
          
-         
+         jj
          </div>
          <BottomWarning label={"Already Have an Account ?"} text={"Signin"} to={"/singin"}/>
          
