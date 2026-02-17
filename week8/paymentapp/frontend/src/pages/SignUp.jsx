@@ -3,6 +3,7 @@ import Heading from '../components/Heading'
 import SubHeading from '../components/SubHeading'
 import InputBox from '../components/InputBox'
 import Button from '../components/Button'
+import BottomWarning from '../components/BottomWarning'
 
 const SignUp = () => {
   return (
@@ -19,6 +20,8 @@ const SignUp = () => {
          
          
          </div>
+         <BottomWarning label={"Already Have an Account ?"} text={"Signin"} to={"/singin"}/>
+         
 
 
       </div>
