@@ -10,7 +10,7 @@ router.get('/getbalance',authMiddleware ,async(req,res)=>{
     try {
         const userId=req.userId
         const balance=await Account.findOne({userId})
-        return res.status(200).json({msg:`your account balance is ${balance.balance}`})
+        return res.status(200).json(balance)
     } catch (error) {
         return res.status(400).json(error)
     }
