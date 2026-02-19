@@ -85,7 +85,7 @@ router.post('/signin',async(req,res)=>{
     }
 
 })
-router.put('/',authMiddleware,async(req,res)=>{
+router.put('/update',authMiddleware,async(req,res)=>{
     
     try {
         const {success}=updateSchema.safeParse(req.body)

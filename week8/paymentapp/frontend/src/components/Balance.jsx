@@ -14,12 +14,12 @@ const Balance = () => {
           headers: { Authorization: `Bearer ${token}` }
         }
       )
-      console.log(response.data.balance)
+    
       setBalance(response.data.balance) // adjust key based on backend response
     }
 
     fetchBalance()
-  }, [balance])
+  }, [])
 
   return <div className='font-bold text-2xl'>Your Balance Rs {balance}</div>
 }

@@ -52,7 +52,7 @@ const User = ({ user }) => {
       </div>
 
       <button
-        onClick={() => navigate('/transfer')}
+        onClick={() => navigate(`/transfer?id=${user.id}&firstName=${user.firstName}`)}
         className='bg-black text-white px-4 py-1 rounded-md'
       >
         Send
