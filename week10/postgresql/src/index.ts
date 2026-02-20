@@ -28,12 +28,13 @@ async function createUserTable() {
     await client.end();
   }
 }
-async function UpdateTable() {
+async function UpdateTable(username:string,email:string,password:string) {
     await client.connect()
     try {
-        const res=await client.query(`
-            INSERT INTO users( username,email,password
-            ) VALUES('username1','hnjsgbfui','dwjidw')`)
+        const insertQuery=`INSERT INTO users( username,email,password
+            ) VALUES('$1','$2','$3')`
+             const value=[username,email,password]
+        const res=await client.query(insertQuery,value)
         console.log(res)    
     } catch (error) {
         console.log(error)
