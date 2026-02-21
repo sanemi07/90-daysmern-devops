@@ -48,4 +48,4 @@ async function UpdateTable(username:string,email:string,password:string) {
   console.error("DB setup failed:", error);
 });*/
 
-UpdateTable()
+UpdateTable("arjun","email","jdihnf")
