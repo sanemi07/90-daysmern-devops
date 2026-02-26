@@ -10,5 +10,16 @@
   "devDependencies": {
     "@types/pg": "^8.16.0",
     "prisma": "^7.4.1"
-  }
+  },
+  "name": "survey-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
