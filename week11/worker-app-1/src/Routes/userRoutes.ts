@@ -48,7 +48,7 @@ router.post('/signup',async(c:Context)=>{
       }
     })
     const userId=res.id
-    const token=await jwt.sign(userId,"bfusifgbeuif")
+    const token:string=await jwt.sign(userId,"bfusifgbeuif")
     return c.json({
       msg:"regstered saccesfully",
       token,
@@ -64,4 +64,5 @@ router.post('/signup',async(c:Context)=>{
     return c.json(error,500)
  }
 })
+router.post()
 
