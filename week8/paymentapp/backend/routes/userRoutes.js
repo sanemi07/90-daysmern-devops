@@ -1,10 +1,10 @@
 import { Router } from "express";
 import zod from "zod";
-import User from "../models/user.model.js";
-import { hashPassword ,generateToken,comparePassword} from "../models/user.model.js";
+import User from "../../models/user.model.js";
+import { hashPassword ,generateToken,comparePassword} from "../../models/user.model.js";
 import { authMiddleware } from "../middleware/auth.js";
 
-import Account from "../models/account.model.js";
+import Account from "../../models/account.model.js";
 
 
 
